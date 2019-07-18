@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -27,7 +28,20 @@ namespace AD419.Mvc.Controllers
 
             using (var db = new DbManager(conn))
             {
-                var departments = await db.Connection.QueryAsync<DepartmentsModel>(Queries.Departments);
+                var departments = await db.Connection.QueryAsync("usp_getAllDepartments", commandType: CommandType.StoredProcedure);
+                return Json(departments.ToList());
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTotalExpensesByDept()
+        {
+            var conn = this.configuration.GetConnectionString("DefaultConnection");
+
+            using (var db = new DbManager(conn))
+            {
+                var departments = await db.Connection
+                    .QueryAsync("usp_getTotalExpensesByDept", new { OrgR = "All" }, commandType: CommandType.StoredProcedure);
                 return Json(departments.ToList());
             }
         }
