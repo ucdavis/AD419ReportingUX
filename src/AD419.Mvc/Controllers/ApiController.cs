@@ -28,20 +28,20 @@ namespace AD419.Mvc.Controllers
 
             using (var db = new DbManager(conn))
             {
-                var departments = await db.Connection.QueryAsync("usp_getAllDepartments", commandType: CommandType.StoredProcedure);
+                var departments = await db.Connection.QueryAsync("usp_getReportingOrg", commandType: CommandType.StoredProcedure);
                 return Json(departments.ToList());
             }
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTotalExpensesByDept()
+        public async Task<IActionResult> GetTotalExpensesByDept(string OrgR)
         {
             var conn = this.configuration.GetConnectionString("DefaultConnection");
 
             using (var db = new DbManager(conn))
             {
                 var departments = await db.Connection
-                    .QueryAsync("usp_getTotalExpensesByDept", new { OrgR = "All" }, commandType: CommandType.StoredProcedure);
+                    .QueryAsync("usp_getTotalExpensesByDept", new { OrgR }, commandType: CommandType.StoredProcedure);
                 return Json(departments.ToList());
             }
         }
