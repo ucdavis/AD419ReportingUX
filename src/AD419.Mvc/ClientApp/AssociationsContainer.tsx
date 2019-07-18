@@ -2,23 +2,41 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ExpenseGrouping from './ExpenseGrouping';
 import MoneyTotals from './MoneyTotals';
-import { IDepartments } from './types';
+import { IDepartments, ITotalExpensesByDept } from './types';
 
 export default function AssociationsContainer() {
   const [departments, setDepartments] = useState<IDepartments[]>([]);
   const [department, changeDepartment] = useState<string>('');
+  const [totalExpenses, setTotalExpenses] = useState<ITotalExpensesByDept[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchDeps = async () => {
-      const deps = await axios('/api/getdepartments');
+      console.log('fetchDeps');
+      const deps = await axios('/api/GetDepartments');
+      console.log(deps);
       setDepartments(deps.data);
+      changeDepartment(deps.data[0].OrgR);
     };
     fetchDeps();
   }, []);
 
+  useEffect(() => {
+    const fetchTotalExpensesByDept = async () => {
+      console.log('fetchTotalExpensesByDept');
+      const expenses = await axios(
+        `/api/getTotalExpensesByDept?OrgR=${department}`
+      );
+      console.log(expenses.data);
+      setTotalExpenses(expenses.data);
+    };
+    fetchTotalExpensesByDept();
+  }, [department]);
+
   const departmentList = departments.map(x => (
-    <option key={x.orgR} value={x.orgR}>
-      {x.orgR} ({x.orgName})
+    <option key={x.OrgR} value={x.OrgR}>
+      {x['Org-Dept']}
     </option>
   ));
 
@@ -30,7 +48,7 @@ export default function AssociationsContainer() {
         {departmentList}
       </select>
       <ExpenseGrouping />
-      <MoneyTotals />
+      <MoneyTotals totalExpenses={totalExpenses} />
     </div>
   );
 }
