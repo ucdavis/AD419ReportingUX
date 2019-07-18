@@ -28,7 +28,7 @@ namespace AD419.Mvc.Controllers
             using (var db = new DbManager(conn))
             {
                 var departments = await db.Connection.QueryAsync<DepartmentsModel>(Queries.Departments);
-                return Json(departments);
+                return Json(departments.ToList());
             }
         }
     }
