@@ -6,6 +6,7 @@ import { IDepartments } from './types';
 
 export default function AssociationsContainer() {
   const [departments, setDepartments] = useState<IDepartments[]>([]);
+  const [department, changeDepartment] = useState<string>('');
 
   useEffect(() => {
     const fetchDeps = async () => {
@@ -15,12 +16,19 @@ export default function AssociationsContainer() {
     fetchDeps();
   }, []);
 
-  const departmentList = departments.map(x => <li key={x.orgR}>{x.orgR}</li>);
+  const departmentList = departments.map(x => (
+    <option key={x.orgR} value={x.orgR}>
+      {x.orgR} ({x.orgName})
+    </option>
+  ));
+
   return (
     <div>
       <h1>Associations</h1>
       <h3>Department:</h3>
-      <ul>{departmentList}</ul>
+      <select onChange={e => changeDepartment(e.target.value)}>
+        {departmentList}
+      </select>
       <ExpenseGrouping />
       <MoneyTotals />
     </div>
