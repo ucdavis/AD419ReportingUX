@@ -13,9 +13,7 @@ export default function AssociationsContainer() {
 
   useEffect(() => {
     const fetchDeps = async () => {
-      console.log('fetchDeps');
       const deps = await axios('/api/GetDepartments');
-      console.log(deps);
       setDepartments(deps.data);
       changeDepartment(deps.data[0].OrgR);
     };
@@ -24,11 +22,9 @@ export default function AssociationsContainer() {
 
   useEffect(() => {
     const fetchTotalExpensesByDept = async () => {
-      console.log('fetchTotalExpensesByDept');
       const expenses = await axios(
         `/api/getTotalExpensesByDept?OrgR=${department}`
       );
-      console.log(expenses.data);
       setTotalExpenses(expenses.data);
     };
     fetchTotalExpensesByDept();

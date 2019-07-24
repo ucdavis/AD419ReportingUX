@@ -9,7 +9,6 @@ export default function MoneyTotals(props: IProps) {
   if (!props.totalExpenses || props.totalExpenses.length < 1) {
     return null;
   }
-  console.log(props.totalExpenses);
   const expenses = props.totalExpenses.map(x => (
     <tr key={x[''].valueOf()}>
       <td>{x[''].valueOf()}</td>
