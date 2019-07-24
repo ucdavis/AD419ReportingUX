@@ -1,36 +1,16 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { IExpensesByRecordGrouping } from './types';
 
 interface IProps {
-  orgR: string;
+  expenses: IExpensesByRecordGrouping[];
 }
 
 export default function ExpenseGrouping(props: IProps) {
-  if (!props || !props.orgR) {
+  if (!props || !props.expenses) {
     return null;
   }
-  const [expenses, changeExpenses] = useState<IExpensesByRecordGrouping[]>([]);
-  const grouping = 'Organization';
-  const associated = 0;
-  const unassociated = 1;
-  useEffect(() => {
-    const fetchExpenses = async () => {
-      if (!props.orgR) {
-        return null;
-      }
-      const expensesObj = await axios(
-        `/api/GetExpensesByRecordGrouping?Grouping=${grouping}
-          &OrgR=${props.orgR}
-          &Associated=${associated}
-          &Unassociated=${unassociated}`
-      );
-      changeExpenses(expensesObj.data);
-    };
-    fetchExpenses();
-  }, [props.orgR]);
 
-  const expensesList = expenses.map((x, i) => (
+  const expensesList = props.expenses.map((x, i) => (
     <tr key={i}>
       <td>{x.Num}</td>
       <td>{x.Chart}</td>
