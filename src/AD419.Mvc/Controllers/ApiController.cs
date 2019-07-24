@@ -58,5 +58,18 @@ namespace AD419.Mvc.Controllers
                 return Json(expenses.ToList());
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProjectsByDept(string OrgR)
+        {
+            var conn = this.configuration.GetConnectionString("DefaultConnection");
+
+            using (var db = new DbManager(conn))
+            {
+                var expenses = await db.Connection
+                    .QueryAsync("usp_getProjectsByDept", new { OrgR }, commandType: CommandType.StoredProcedure);
+                return Json(expenses.ToList());
+            }
+        }
     }
 }
