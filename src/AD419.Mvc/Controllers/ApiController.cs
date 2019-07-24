@@ -38,6 +38,8 @@ namespace AD419.Mvc.Controllers
         {
             var conn = this.configuration.GetConnectionString("DefaultConnection");
 
+                var expenses = await db.Connection
+                return Json(expenses.ToList());
             using (var db = new DbManager(conn))
             {
                 var departments = await db.Connection
