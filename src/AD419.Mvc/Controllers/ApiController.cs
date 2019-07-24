@@ -38,13 +38,24 @@ namespace AD419.Mvc.Controllers
         {
             var conn = this.configuration.GetConnectionString("DefaultConnection");
 
-                var expenses = await db.Connection
-                return Json(expenses.ToList());
             using (var db = new DbManager(conn))
             {
-                var departments = await db.Connection
+                var expenses = await db.Connection
                     .QueryAsync("usp_getTotalExpensesByDept", new { OrgR }, commandType: CommandType.StoredProcedure);
-                return Json(departments.ToList());
+                return Json(expenses.ToList());
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetExpensesByRecordGrouping(string Grouping, string OrgR, int Associated, int Unassociated)
+        {
+            var conn = this.configuration.GetConnectionString("DefaultConnection");
+
+            using (var db = new DbManager(conn))
+            {
+                var expenses = await db.Connection
+                    .QueryAsync("usp_getExpenseRecordGrouping", new { Grouping, OrgR, Associated, Unassociated }, commandType: CommandType.StoredProcedure);
+                return Json(expenses.ToList());
             }
         }
     }
