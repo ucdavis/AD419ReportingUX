@@ -9,3 +9,13 @@ export interface ITotalExpensesByDept {
   FTE: number;
   RECS: number;
 }
+
+export interface IExpensesByRecordGrouping {
+  Chart: string;
+  Code: string;
+  Description: string;
+  isAssociated: number;
+  Spent: number;
+  FTE: number;
+  Num: number;
+}

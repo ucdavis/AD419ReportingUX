@@ -5,16 +5,19 @@ import MoneyTotals from './MoneyTotals';
 import { IDepartments, ITotalExpensesByDept } from './types';
 
 export default function AssociationsContainer() {
-  const [departments, setDepartments] = useState<IDepartments[]>([]);
+  // list of departments
+  const [departmentList, setDepartmentList] = useState<IDepartments[]>([]);
+  // selected department's OrgR
   const [department, changeDepartment] = useState<string>('');
-  const [totalExpenses, setTotalExpenses] = useState<ITotalExpensesByDept[]>(
+  // total expenses by department, controlled by department.OrgR
+  const [totalExpenses, changeTotalExpenses] = useState<ITotalExpensesByDept[]>(
     []
   );
 
   useEffect(() => {
     const fetchDeps = async () => {
       const deps = await axios('/api/GetDepartments');
-      setDepartments(deps.data);
+      setDepartmentList(deps.data);
       changeDepartment(deps.data[0].OrgR);
     };
     fetchDeps();
@@ -25,12 +28,12 @@ export default function AssociationsContainer() {
       const expenses = await axios(
         `/api/getTotalExpensesByDept?OrgR=${department}`
       );
-      setTotalExpenses(expenses.data);
+      changeTotalExpenses(expenses.data);
     };
     fetchTotalExpensesByDept();
   }, [department]);
 
-  const departmentList = departments.map(x => (
+  const departmentOptions = departmentList.map(x => (
     <option key={x.OrgR} value={x.OrgR}>
       {x['Org-Dept']}
     </option>
@@ -41,9 +44,9 @@ export default function AssociationsContainer() {
       <h1>Associations</h1>
       <h3>Department:</h3>
       <select onChange={e => changeDepartment(e.target.value)}>
-        {departmentList}
+        {departmentOptions}
       </select>
-      <ExpenseGrouping />
+      <ExpenseGrouping orgR={department} />
       <MoneyTotals totalExpenses={totalExpenses} />
     </div>
   );
