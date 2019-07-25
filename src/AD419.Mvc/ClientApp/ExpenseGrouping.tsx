@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import { IExpensesByRecordGrouping } from './types';
 
 interface IProps {
@@ -10,33 +12,34 @@ export default function ExpenseGrouping(props: IProps) {
     return null;
   }
 
-  const expensesList = props.expenses.map((x, i) => (
-    <tr key={i}>
-      <td>{x.Num}</td>
-      <td>{x.Chart}</td>
-      <td>{x.Code}</td>
-      <td>{x.Description}</td>
-      <td>{x.Spent}</td>
-      <td>{x.FTE}</td>
-    </tr>
-  ));
+  const columns = [
+    {
+      Header: props.expenses.length,
+      accessor: 'Num',
+      maxWidth: 100
+    },
+    {
+      Header: 'Chart',
+      accessor: 'Chart',
+      maxWidth: 100
+    },
+    {
+      Header: 'Code',
+      accessor: 'Code'
+    },
+    {
+      Header: 'Name',
+      accessor: 'Description'
+    },
+    {
+      Header: 'Spent',
+      accessor: 'Spent'
+    },
+    {
+      Header: 'FTE',
+      accessor: 'FTE'
+    }
+  ];
 
-  return (
-    <div>
-      <h3>Expense Grouping</h3>
-      <table>
-        <thead>
-          <tr>
-            <th />
-            <th>Chart</th>
-            <th>OrgCode</th>
-            <th>OrgName</th>
-            <th>Spent ($)</th>
-            <th>FTE</th>
-          </tr>
-        </thead>
-        <tbody>{expensesList}</tbody>
-      </table>
-    </div>
-  );
+  return <ReactTable data={props.expenses} columns={columns} />;
 }
