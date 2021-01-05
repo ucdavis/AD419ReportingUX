@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/ucdavis/AD419ReportingUX#readme",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-table": "^6.10.0"
